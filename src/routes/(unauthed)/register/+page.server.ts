@@ -14,7 +14,7 @@ export const actions: Actions = {
 		if (!username || !email || !password) {
 			return fail(400, { error: 'Alle Felder sind erforderlich.' });
 		}
-
+		console.log({ username, email, password } as RegisterRequest);
 		// 3. Aufruf des FastAPI-Endpoints
 		const res = await fetch('http://localhost:8000/users/register', {
 			method: 'POST',

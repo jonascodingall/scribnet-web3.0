@@ -51,6 +51,7 @@
 		"zod": "^3.24.3"
 	},
 	"dependencies": {
+		"@tanstack/table-core": "^8.21.3",
 		"bcryptjs": "^3.0.2"
 	}
 }
