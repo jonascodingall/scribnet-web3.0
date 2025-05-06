@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	const vidIDList = [
 		'HmkbBdD8044',
 		'Yt4ev4Vdq2o',
@@ -465,14 +466,50 @@
 		'jrB1IB7d0o8',
 		'0_ZvBKtRjDQ'
 	];
-	let random = Math.floor(Math.random() * 463);
-	let vidrandom = vidIDList[random];
+	let random = $state(Math.floor(Math.random() * 463));
+	let vidrandom = $state(vidIDList[random]);
 	let vidlink = 'https://www.youtube.com/embed';
+	let videoTitle = $state('');
+	let errorMsg = $state('');
+
+	async function fetchVideoInfo() {
+		let status = false;
+		while (status === false) {
+			try {
+				// Stelle sicher, dass du die normale YouTube Watch-URL verwendest.
+				const oEmbedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${vidrandom}&format=json`;
+				const response = await fetch(oEmbedUrl);
+
+				if (!response.ok) {
+					let random = Math.floor(Math.random() * 463);
+					vidrandom = vidIDList[random];
+					throw new Error('Fehler beim Abrufen der Daten');
+				} else {
+					status = true;
+				}
+
+				const data = await response.json();
+				videoTitle = data.title;
+			} catch (error) {
+				console.error('Fehler: ', error);
+				errorMsg = 'Es gab einen Fehler beim Laden der Videoinformationen.';
+			}
+		}
+	}
+	onMount(() => {
+		fetchVideoInfo();
+	});
 </script>
 
 <div>
+	<p
+		class=" max-w-35 place-self-center break-all rounded-[1rem] text-4xl font-extrabold tracking-tight lg:text-2xl"
+	>
+		{videoTitle}
+	</p>
 	<iframe
-		title="Test"
+		class="place-self-center"
+		title={videoTitle}
 		width="560"
 		height="315"
 		src={`${vidlink}/${vidrandom}`}
