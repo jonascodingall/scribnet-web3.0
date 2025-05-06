@@ -55,3 +55,12 @@
     --chat-received: 30 16% 60%; /* Etwas helleres Beige für empfangene Nachrichten */
   }
 }
+
+@layer base {
+  * {
+    @apply border-border
+  }
+  body{
+    @apply bg-background text-foreground
+  }
+}
